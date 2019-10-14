@@ -1,18 +1,30 @@
 import React from 'react'
 import classes from './Header.module.css'
-import {NavLink} from "react-router-dom";
+import {NavLink, withRouter} from "react-router-dom";
+import axios from "axios";
+import {authLogoutThunkCreator, setAuthInfoThunkCreator, setUserInfoAC} from "../../redux/AuthReducer";
+import {connect} from "react-redux";
+import Header from "./Header";
 
-const Header = () =>{
-	return(
-		<header className={classes.Header}>
-			<div className={classes.logo}>
-				<img src="https://pbs.twimg.com/profile_images/3572978953/8c522d3ea384cd42e46a4a2498300c35_400x400.jpeg" alt=""/>
-			</div>
-			<div className={classes.login_block}>
-				<NavLink to="/login">Login</NavLink>
-			</div>
-		</header>
-	)
+class HeaderContainer extends React.Component {
+
+
+	render() {
+		return (
+			<Header {...this.props} login={this.props.login} isFetch={this.props.isFetch} />
+		)
+	}
 }
-
-export default Header
+const mapDispatchToProps = (state)=>{
+	return{
+		isAuth: state.Auth.isAuth,
+		login: state.Auth.login
+	}
+}
+let HeaderContainerWithRouter = withRouter(HeaderContainer)
+export default connect(mapDispatchToProps,
+	{
+		setAuthInfo: setAuthInfoThunkCreator,
+		authLogout: authLogoutThunkCreator
+	})
+(HeaderContainerWithRouter)

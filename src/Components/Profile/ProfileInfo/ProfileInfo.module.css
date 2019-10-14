@@ -1,0 +1,8 @@
+.photo img{
+border-bottom: 5px solid red;
+max-width: 100%;
+}
+
+.status_form input{
+    min-width: 370px;
+}

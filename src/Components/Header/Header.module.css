@@ -1,0 +1,18 @@
+header{
+	min-height: 100px;
+	background: green;	
+}
+.logo img{
+	max-width: 90px;
+	float: left;
+}
+
+.Header{
+	grid-area: h;
+}
+.login_block{
+	float: right;
+}
+.login_block a{
+	color: #fff;
+}

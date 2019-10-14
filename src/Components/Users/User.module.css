@@ -1,0 +1,11 @@
+.user_img{
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+}
+.pagination span{
+	cursor: pointer;
+}
+.current_page{
+	font-weight: bold;
+}
