@@ -2,6 +2,7 @@ import React from 'react'
 import classes from './ProfileInfo.module.css'
 import Loader from "../../Common/Loader/Loader";
 import ProfileStatus from "./ProfileStatus";
+import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 
 const ProfileInfo = (props) => {
 	if(!props.profile){
@@ -9,7 +10,7 @@ const ProfileInfo = (props) => {
 	}
 	return(
 		<React.Fragment>
-			<ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+			<ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>
 			<div className={classes.photo}>
 				<img src="https://s3-us-west-2.amazonaws.com/uw-s3-cdn/wp-content/uploads/sites/6/2017/11/04133712/waterfall.jpgd" alt=""/>
 			</div>

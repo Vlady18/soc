@@ -45,7 +45,6 @@ export const setCaptchaAC = (url) =>{
         url
     }
 }
-
 export const setAuthInfoThunkCreator = () => (dispatch)=>{
     return API.setAuth().then(data =>{
         if(data.resultCode === 0){

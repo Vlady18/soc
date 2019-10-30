@@ -36,14 +36,14 @@ class ProfileStatus extends React.Component{
                 <div className="status_block">
                     {
                         !this.state.activeStatus
-                            ?
-                            <div className="status_span">
-                                <span onDoubleClick={this.setActiveStatus}>{this.props.status ? this.props.status : 'Введите свой статус'}</span>
-                            </div>
-                            :
-                            <form className={classes.status_form}>
-                                <input onChange={this.changeStatusLocal} autoFocus={true} onBlur={this.setPassiveStatus} type="text" value={this.state.status}/>
-                            </form>
+                        ?
+                        <div className="status_span">
+                            <span onDoubleClick={this.setActiveStatus}>{this.props.status ? this.props.status : 'Введите свой статус'}</span>
+                        </div>
+                        :
+                        <form className={classes.status_form}>
+                            <input onChange={this.changeStatusLocal} autoFocus={true} onBlur={this.setPassiveStatus} type="text" value={this.state.status}/>
+                        </form>
                     }
                 </div>
         )
