@@ -63,41 +63,37 @@ export const userStatusAC = (status) =>{
 	return({type: STATUS, status})
 }
 
-export const userProfileThunkCreator = (userId) => (dispatch)=>{
+export const userProfileThunkCreator = (userId) => async (dispatch)=>{
 	if(!userId){
-		API.loadMeProfile().then(data=>{
+		let data = await API.loadMeProfile();
 			userId = data.data.id
 			API.loadUserProfile(userId).then(data =>{
 				dispatch(userProfileAC(data))
 			})
-		})
 	}
 	else {
-		API.loadUserProfile(userId).then(data => {
+		let data = await API.loadUserProfile(userId);
 			dispatch(userProfileAC(data))
-		})
 	}
 }
 
-export const userStatusThunkCreator = (userId) => (dispatch)=>{
+export const userStatusThunkCreator = (userId) => async (dispatch)=>{
 	if(!userId){
-		API.loadMeProfile().then(data=>{
+		let data = await API.loadMeProfile();
 			userId = data.data.id
-			API.loadUserStatus(userId).then(status=>{
+			await API.loadUserStatus(userId).then(status=>{
 				dispatch(userStatusAC(status))
 			})
-		})
 	}
-	API.loadUserStatus(userId).then(status=>{
+	await API.loadUserStatus(userId).then(status=>{
 		dispatch(userStatusAC(status))
 	})
 }
 
-export const updateUserStatusThunkCreator = (status) => (dispatch)=>{
-	API.updateUserStatus(status).then(data=>{
+export const updateUserStatusThunkCreator = (status) => async (dispatch)=>{
+	let data = await API.updateUserStatus(status);
 		if(data.resultCode === 0){
 			dispatch(userStatusAC(status))
 		}
-	})
 }
 export default ProfilePageReducer;
