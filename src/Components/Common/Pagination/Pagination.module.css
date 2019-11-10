@@ -1,0 +1,6 @@
+.pagination span{
+    cursor: pointer;
+}
+.current_page{
+    font-weight: bold;
+}

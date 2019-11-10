@@ -21,7 +21,6 @@ class App extends Component {
 
     render() {
         if(!this.props.initialized){
-            debugger
             return <Loader />
         }
     return (

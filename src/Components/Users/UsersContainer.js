@@ -1,8 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {
-	followAC,
-	unfollowAC,
 	setUsersAC,
 	setCurrentPageAC,
 	totalUserCountAC,
@@ -13,14 +11,13 @@ import {
 	followThunkCreator,
 	unfollowThunkCreator
 } from '../../redux/UserPageReducer'
-import axios from "axios";
 import Users from "./Useers";
 import Loader from "../Common/Loader/Loader";
-import {API} from "../../API/API";
 
 class UsersAPI extends React.Component{
 	componentDidMount() {
-		this.props.getUsers(this.props.pageSize, this.props.currentPage)
+		const {pageSize, currentPage, getUsers} = this.props;
+		getUsers(pageSize, currentPage)
 		// this.props.toggleIsFetching(true)
 		// API.getUsers(this.props.pageSize, this.props.currentPage).then(data=>{
 		// 	this.props.setUsers(data.items)
@@ -41,7 +38,8 @@ class UsersAPI extends React.Component{
 		// 	this.props.setUsers(data.items)
 		// 	this.props.toggleIsFetching(false)
 		// })
-		this.props.changePage(this.props.pageSize, page)
+		const {pageSize, changePage} = this.props;
+		changePage(pageSize, page)
 	}
 	render(){
 
