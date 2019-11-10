@@ -45,7 +45,6 @@ export const setCaptchaAC = (url) =>{
         url
     }
 }
-
 export const setAuthInfoThunkCreator = () => (dispatch)=>{
     return API.setAuth().then(data =>{
         if(data.resultCode === 0){
@@ -56,30 +55,26 @@ export const setAuthInfoThunkCreator = () => (dispatch)=>{
     })
 }
 
-export const authLoginThunkCreator = (email, password, rememberMe, captcha) => (dispatch)=>{
-    API.authLogin(email, password, rememberMe, captcha).then(data =>{
+export const authLoginThunkCreator = (email, password, rememberMe, captcha) => async (dispatch)=>{
+   let data = await API.authLogin(email, password, rememberMe, captcha);
         let errorMessage = data.data.messages.length > 0 ? data.data.messages : false;
         if(data.data.resultCode === 0){
             dispatch(setAuthInfoThunkCreator())
         }
         else if(data.data.resultCode === 10){
             dispatch(stopSubmit('login', {_error: errorMessage || 'Email or Password is wrong!'}))
-            API.captcha().then(data=>{
-                    dispatch(setCaptchaAC(data.url))
-                }
-            )
+            let data = await API.captcha();
+                dispatch(setCaptchaAC(data.url));
         } else{
             dispatch(stopSubmit('login', {_error: errorMessage || 'Email or Password is wrong!'}))
         }
-    })
 }
 
-export const authLogoutThunkCreator = () => (dispatch)=>{
-    API.authLogout().then(data =>{
+export const authLogoutThunkCreator = () => async (dispatch)=>{
+    let data = await API.authLogout();
         if(data.data.resultCode === 0){
             dispatch(setUserInfoAC(null, null, null, false))
         }
-    })
 }
 
 export default AuthReducer;
