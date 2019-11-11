@@ -9,7 +9,6 @@ import DialogsContainers from './Components/Dialogs/DialogsContainers'
 import UsersAPI from './Components/Users/UsersContainer'
 import HeaderContainer from "./Components/Header/HeaderContainer";
 import Login from "./Components/Login/Login";
-import {setAuthInfoThunkCreator} from "./redux/AuthReducer";
 import {connect} from "react-redux";
 import {compose} from "redux";
 import {setInitializedThunkCreator} from "./redux/AppReducer";

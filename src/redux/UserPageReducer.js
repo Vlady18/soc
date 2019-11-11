@@ -1,4 +1,5 @@
 import {API} from "../API/API";
+import {updateObjInArray} from '../utils/object-helpers'
 
 const FOLLOW = 'FOLLOW'
 const UN_FOLLOW = 'UN_FOLLOW'
@@ -22,22 +23,12 @@ const UserPageReducer = (state = initialState, action) => {
         case FOLLOW :
             return {
                 ...state,
-                users: state.users.map(u => {
-                    if (action.userId === u.id) {
-                        return {...u, followed: true}
-                    }
-                    return u
-                })
+                users: updateObjInArray(state.users, action.userId, 'id', {followed: true})
             }
         case UN_FOLLOW :
             return {
                 ...state,
-                users: state.users.map(u => {
-                    if (action.userId === u.id) {
-                        return {...u, followed: false}
-                    }
-                    return u
-                })
+                users: updateObjInArray(state.users, action.userId, 'id', {followed: false})
             }
         case SET_USERS :
             return {
@@ -137,38 +128,28 @@ export const changePageThunkCreator = (pageSize, page) => async (dispatch) => {
     dispatch(toggleIsFetchingAC(false))
 }
 
-const followUnFollowFlow = async (dispatch, userId) =>{
-    dispatch(toggleIsFollowInProgresAC(true, userId))
-
-    let data = await API.inFollow(userId);
-    dispatch(toggleIsFollowInProgresAC(false, userId))
-    if (data.resultCode === 0) {
-        dispatch(followAC(userId))
-    }
-}
-
-export const followThunkCreator = (userId) => async (dispatch) => {
-    let apiMethod = API.inFollow.bind(API)
-    let actionCreator = followAC;
-
+const followUnFollowFlow = async (dispatch, userId, apiMethod, actionCreator) =>{
     dispatch(toggleIsFollowInProgresAC(true, userId))
     let data = await apiMethod(userId);
     dispatch(toggleIsFollowInProgresAC(false, userId))
     if (data.resultCode === 0) {
         dispatch(actionCreator(userId))
     }
+}
+
+export const followThunkCreator = (userId) => async (dispatch) => {
+    let apiMethod = API.inFollow.bind(API);
+    let actionCreator = followAC;
+    followUnFollowFlow(dispatch, userId, apiMethod, actionCreator);
+
 }
 
 export const unfollowThunkCreator = (userId) => async (dispatch) => {
     let apiMethod = API.unFollow.bind(API);
     let actionCreator = unfollowAC;
+    followUnFollowFlow(dispatch, userId, apiMethod, actionCreator);
 
-    dispatch(toggleIsFollowInProgresAC(true, userId))
-    let data = await apiMethod(userId);
-    dispatch(toggleIsFollowInProgresAC(false, userId))
-    if (data.resultCode === 0) {
-        dispatch(actionCreator(userId))
-    }
+
 }
 
 export default UserPageReducer;
