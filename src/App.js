@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import Header from './Components/Header/Header'
 import Navbar from './Components/Navbar'
-import ProfileContainer from './Components/Profile/ProfileContainer'
-import Dialogs from './Components/Dialogs'
 import {Route, Switch, withRouter} from 'react-router-dom'
-import DialogsContainers from './Components/Dialogs/DialogsContainers'
+// import ProfileContainer from './Components/Profile/ProfileContainer'
+
 import UsersAPI from './Components/Users/UsersContainer'
 import HeaderContainer from "./Components/Header/HeaderContainer";
 import Login from "./Components/Login/Login";
@@ -13,6 +12,9 @@ import {connect} from "react-redux";
 import {compose} from "redux";
 import {setInitializedThunkCreator} from "./redux/AppReducer";
 import Loader from "./Components/Common/Loader/Loader";
+
+const ProfileContainer = React.lazy(() => import('./Components/Profile/ProfileContainer'));
+const DialogsContainers = React.lazy(() => import('./Components/Dialogs/DialogsContainers'));
 class App extends Component {
     componentDidMount() {
         this.props.setInitialized()
@@ -28,7 +30,9 @@ class App extends Component {
         <Navbar />
         <div className="app-wrapper_content">
 	        <Switch>
-				<Route exact render={() => (<ProfileContainer/>)} path={'/profile/:userId?'}/>
+                <Route exact render={() => <React.Suspense fallback={<div>Загрузка...</div>}>
+                        <ProfileContainer/>
+                    </React.Suspense> } path={'/profile/:userId?'}/>
 				<Route render={() => (<DialogsContainers/>)} path={'/dialogs'}/>
 				<Route render={() => (<UsersAPI/>)} path={'/users'}/>
 				<Route render={() => (<Login/>)} path={'/login'}/>
