@@ -34,6 +34,13 @@ class ProfileContainer extends React.Component{
 		// 	this.props.setUserProfile(data)
 		// })
 	}
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		if(this.props.match.params.userId != prevProps){
+			let userId = this.props.match.params.userId;
+			this.props.userProfile(userId)
+			this.props.userStatus(userId)
+		}
+	}
 
 	render(){
 		return(
@@ -43,6 +50,7 @@ class ProfileContainer extends React.Component{
 				isAuth={this.props.isAuth}
 				status={this.props.status}
 				updateStatus={this.props.updateStatus}
+				isOwner={!this.props.match.params.userId}
 			/>
 		)
 	}

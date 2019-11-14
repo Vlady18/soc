@@ -8,12 +8,12 @@ const ProfileInfo = (props) => {
 	if(!props.profile){
 		return <Loader />
 	}
+	const avatarChange = (e) =>{
+		console.log(e)
+	}
 	return(
 		<React.Fragment>
 			<ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>
-			<div className={classes.photo}>
-				<img src="https://s3-us-west-2.amazonaws.com/uw-s3-cdn/wp-content/uploads/sites/6/2017/11/04133712/waterfall.jpgd" alt=""/>
-			</div>
 			<div className="profile_info">
 				<p>{props.profile.fullName}</p>
 				<h4>{props.profile.aboutMe}</h4>
@@ -22,7 +22,12 @@ const ProfileInfo = (props) => {
 						return <li>{li} : {props.profile.contacts[li]} </li>
 					})}
 				</ul>
-				<img src={props.profile.photos.large} alt="user"/>
+				<div className="user_avatar">
+					<img src={props.profile.photos.large ? props.profile.photos.large : "https://img.icons8.com/plasticine/2x/user.png"} alt="user"/>
+					{
+						props.isOwner ? <input onChange={avatarChange} type="file"/> : null
+					}
+				</div>
 			</div>
 		</React.Fragment>
 		)
