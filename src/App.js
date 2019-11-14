@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import Header from './Components/Header/Header'
+// import Header from './Components/Header/Header'
 import Navbar from './Components/Navbar'
 import {Route, Switch, withRouter} from 'react-router-dom'
-// import ProfileContainer from './Components/Profile/ProfileContainer'
-
 import UsersAPI from './Components/Users/UsersContainer'
 import HeaderContainer from "./Components/Header/HeaderContainer";
 import Login from "./Components/Login/Login";
@@ -30,13 +28,13 @@ class App extends Component {
         <Navbar />
         <div className="app-wrapper_content">
 	        <Switch>
-                <Route exact render={() => <React.Suspense fallback={<div>Загрузка...</div>}>
-                        <ProfileContainer/>
-                    </React.Suspense> } path={'/profile/:userId?'}/>
+            <React.Suspense fallback={<div>Загрузка...</div>}>
+                <Route exact render={() => <ProfileContainer/>} path={'/profile/:userId?'}/>
 				<Route render={() => (<DialogsContainers/>)} path={'/dialogs'}/>
 				<Route render={() => (<UsersAPI/>)} path={'/users'}/>
 				<Route render={() => (<Login/>)} path={'/login'}/>
 				<Route render={()=>(<h1>Not found</h1>)}/>
+            </React.Suspense>
 			</Switch>
         </div>
       </div>
