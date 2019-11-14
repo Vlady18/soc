@@ -9,7 +9,9 @@ const ProfileInfo = (props) => {
 		return <Loader />
 	}
 	const avatarChange = (e) =>{
-		console.log(e)
+		if(e.target.files.length){
+			props.savePhoto(e.target.files[0])
+		}
 	}
 	return(
 		<React.Fragment>

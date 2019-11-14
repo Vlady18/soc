@@ -43,5 +43,8 @@ export const API = {
     },
     captcha(){
         return instance.get('security/get-captcha-url').then(response=> response.data)
+    },
+    profileAvatar(file){
+        return instance.get('security/get-captcha-url').then(response=> response.data)
     }
 }

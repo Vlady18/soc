@@ -10,7 +10,8 @@ import {
 	updateUserStatusThunkCreator,
 	userProfileAC,
 	userProfileThunkCreator,
-	userStatusThunkCreator
+	userStatusThunkCreator,
+	updatePhotoThunkCreator
 } from "../../redux/ProfilePageReducer";
 import {Redirect, withRouter} from "react-router-dom";
 import {API} from "../../API/API";
@@ -18,10 +19,16 @@ import {withAuthRedirect} from "../hoc/authRedirect";
 import Dialogs from "../Dialogs";
 import {compose} from "redux";
 class ProfileContainer extends React.Component{
-	componentDidMount() {
+	reloadProfle(){
 		let userId = this.props.match.params.userId;
 		this.props.userProfile(userId)
 		this.props.userStatus(userId)
+	}
+	componentDidMount() {
+		// let userId = this.props.match.params.userId;
+		// this.props.userProfile(userId)
+		// this.props.userStatus(userId)
+		this.reloadProfle()
 		// if(!userId){
 		// 	debugger
 		// 	API.loadMeProfile().then(data=>{
@@ -36,9 +43,11 @@ class ProfileContainer extends React.Component{
 	}
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if(this.props.match.params.userId != prevProps){
-			let userId = this.props.match.params.userId;
-			this.props.userProfile(userId)
-			this.props.userStatus(userId)
+			this.reloadProfle();
+			//
+			// let userId = this.props.match.params.userId;
+			// this.props.userProfile(userId);
+			// this.props.userStatus(userId);
 		}
 	}
 
@@ -51,6 +60,7 @@ class ProfileContainer extends React.Component{
 				status={this.props.status}
 				updateStatus={this.props.updateStatus}
 				isOwner={!this.props.match.params.userId}
+				savePhoto={this.props.savePhoto}
 			/>
 		)
 	}
@@ -72,6 +82,7 @@ withAuthRedirect,
 	connect(mapStateToProps, {
 		userProfile: userProfileThunkCreator,
 		userStatus: userStatusThunkCreator,
-		updateStatus: updateUserStatusThunkCreator
+		updateStatus: updateUserStatusThunkCreator,
+		savePhoto: updatePhotoThunkCreator
 	}),
 	withRouter)(ProfileContainer)

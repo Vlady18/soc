@@ -4,6 +4,7 @@ const ADD_POST = 'ADD_POST'
 const UPDATE_TEXT = 'UPDATE_TEXT'
 const USER_PROFILE = 'USER_PROFILE'
 const STATUS = 'STATUS'
+const SUCCESS_UPDATE_AVATAR = 'SUCCESS_UPDATE_AVATAR'
 
 const initialState = {
 	posts: [
@@ -62,6 +63,9 @@ export const userProfileAC = (profile) =>{
 export const userStatusAC = (status) =>{
 	return({type: STATUS, status})
 }
+export const successUpdatePhotoAC = (file)=>{
+	return({type: SUCCESS_UPDATE_AVATAR, file})
+}
 
 export const userProfileThunkCreator = (userId) => async (dispatch)=>{
 	if(!userId){
@@ -91,6 +95,12 @@ export const userStatusThunkCreator = (userId) => async (dispatch)=>{
 }
 
 export const updateUserStatusThunkCreator = (status) => async (dispatch)=>{
+	let data = await API.updateUserStatus(status);
+		if(data.resultCode === 0){
+			dispatch(userStatusAC(status))
+		}
+}
+export const updatePhotoThunkCreator = (file) => async (dispatch)=>{
 	let data = await API.updateUserStatus(status);
 		if(data.resultCode === 0){
 			dispatch(userStatusAC(status))
