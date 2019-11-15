@@ -45,6 +45,8 @@ export const API = {
         return instance.get('security/get-captcha-url').then(response=> response.data)
     },
     profileAvatar(file){
-        return instance.get('security/get-captcha-url').then(response=> response.data)
+        var fd = new FormData();
+        fd.append('file', file);
+        return instance.put('profile/photo', {}).then(response=> response.data)
     }
 }
