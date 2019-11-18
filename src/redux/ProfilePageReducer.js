@@ -45,6 +45,11 @@ const ProfilePageReducer = (state = initialState, action) =>{
 				...state,
 				status: action.status
 			}
+		case SUCCESS_UPDATE_AVATAR:
+			return{
+				...state,
+				userProfile: {...state.userProfile, photos: action.file}
+			}
 		default:
 			return state
 	}
@@ -101,9 +106,9 @@ export const updateUserStatusThunkCreator = (status) => async (dispatch)=>{
 		}
 }
 export const updatePhotoThunkCreator = (file) => async (dispatch)=>{
-	let data = await API.updateUserStatus(status);
+	let data = await API.profileAvatar(file);
 		if(data.resultCode === 0){
-			dispatch(userStatusAC(status))
+			dispatch(successUpdatePhotoAC(file))
 		}
 }
 export default ProfilePageReducer;

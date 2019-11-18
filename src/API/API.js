@@ -45,8 +45,12 @@ export const API = {
         return instance.get('security/get-captcha-url').then(response=> response.data)
     },
     profileAvatar(file){
-        var fd = new FormData();
-        fd.append('file', file);
-        return instance.put('profile/photo', {}).then(response=> response.data)
+        var newProfileImage = new FormData();
+        newProfileImage.append('image', file);
+        return instance.put('profile/photo', newProfileImage, {
+            headers: {
+                'Content-Type' : 'multipart/form-data'
+            }
+        }).then(response=> response.data)
     }
 }

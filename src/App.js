@@ -27,15 +27,16 @@ class App extends Component {
         <HeaderContainer />
         <Navbar />
         <div className="app-wrapper_content">
-	        <Switch>
             <React.Suspense fallback={<div>Загрузка...</div>}>
+	        <Switch>
                 <Route exact render={() => <ProfileContainer/>} path={'/profile/:userId?'}/>
 				<Route render={() => (<DialogsContainers/>)} path={'/dialogs'}/>
 				<Route render={() => (<UsersAPI/>)} path={'/users'}/>
 				<Route render={() => (<Login/>)} path={'/login'}/>
 				<Route render={()=>(<h1>Not found</h1>)}/>
-            </React.Suspense>
 			</Switch>
+            </React.Suspense>
+
         </div>
       </div>
     );

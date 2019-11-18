@@ -25,7 +25,7 @@ const ProfileInfo = (props) => {
 					})}
 				</ul>
 				<div className="user_avatar">
-					<img src={props.profile.photos.large ? props.profile.photos.large : "https://img.icons8.com/plasticine/2x/user.png"} alt="user"/>
+					<img src={props.profile.photos.large || "https://img.icons8.com/plasticine/2x/user.png"} alt="user"/>
 					{
 						props.isOwner ? <input onChange={avatarChange} type="file"/> : null
 					}
