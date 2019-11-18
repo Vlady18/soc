@@ -3,10 +3,10 @@ import classes from './FormControls.module.css'
 import {email, required} from "../../../utils/validation/validation";
 import {Field} from "redux-form";
 
-export const FormControls = ({input, meta, ...props}) =>{
+export const FormControls = ({input, meta, ...props}) => {
     const hasError = meta.error && meta.touched;
-    return(
-        <div className={classes.formControls + ' ' + (hasError ? classes.error : '' )}>
+    return (
+        <div className={classes.formControls + ' ' + (hasError ? classes.error : '')}>
             <div>
                 {props.children}
             </div>
@@ -16,31 +16,34 @@ export const FormControls = ({input, meta, ...props}) =>{
 }
 
 
-export const Textarea = (props) =>{
+export const Textarea = (props) => {
     const {input, meta, ...restProps} = props
-    return(
+    return (
         <FormControls {...props}>
             <textarea {...input} {...restProps}  />
         </FormControls>
     )
 }
 
-export const Input = (props) =>{
+export const Input = (props) => {
     const {input, meta, ...restProps} = props
-    return(
+    return (
         <FormControls {...props}>
             <input {...input} {...restProps}  />
         </FormControls>
     )
 }
 
-export const createField = (name, validate, component, type) =>{
-    return(
+export const createField = (name, validate, component, props = {}) => {
+    return (
         <div>
-            <Field name={name}
-                   validate={validate}
-                   component={component}
-                   type={type} />
+            <Field
+                name={name}
+                validate={validate}
+                component={component}
+                // type={type}
+                {...props}
+            />
         </div>
     )
 }

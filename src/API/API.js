@@ -45,12 +45,15 @@ export const API = {
         return instance.get('security/get-captcha-url').then(response=> response.data)
     },
     profileAvatar(file){
-        var newProfileImage = new FormData();
-        newProfileImage.append('image', file);
-        return instance.put('profile/photo', newProfileImage, {
+        let newPhotoAvatar = new FormData();
+        newPhotoAvatar.append('image', file);
+        return instance.put('profile/photo', newPhotoAvatar,{
             headers: {
-                'Content-Type' : 'multipart/form-data'
+                'Content-Type': `multipart/form-data`
             }
         }).then(response=> response.data)
+    },
+    updateProfileInfo(profileInfo){
+        return instance.put(`profile`, profileInfo).then(response => response.data)
     }
 }
