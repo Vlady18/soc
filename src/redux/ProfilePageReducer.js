@@ -5,6 +5,7 @@ const UPDATE_TEXT = 'UPDATE_TEXT'
 const USER_PROFILE = 'USER_PROFILE'
 const STATUS = 'STATUS'
 const SUCCESS_UPDATE_AVATAR = 'SUCCESS_UPDATE_AVATAR'
+const SUCCESS_UPDATE_PROFILE_INFO = 'SUCCESS_UPDATE_PROFILE_INFO'
 
 const initialState = {
 	posts: [
@@ -45,6 +46,16 @@ const ProfilePageReducer = (state = initialState, action) =>{
 				...state,
 				status: action.status
 			}
+		case SUCCESS_UPDATE_AVATAR:
+			return{
+				...state,
+				userProfile: {...state.userProfile, photos: action.file}
+			}
+		case SUCCESS_UPDATE_PROFILE_INFO:
+			return{
+				...state,
+				userProfile: {...state.userProfile, ...action.profileInfo}
+			}
 		default:
 			return state
 	}
@@ -66,12 +77,16 @@ export const userStatusAC = (status) =>{
 export const successUpdatePhotoAC = (file)=>{
 	return({type: SUCCESS_UPDATE_AVATAR, file})
 }
+export const successUpdateProfileInfoAC = (profileInfo)=>{
+	return({type: SUCCESS_UPDATE_PROFILE_INFO, profileInfo})
+}
 
 export const userProfileThunkCreator = (userId) => async (dispatch)=>{
 	if(!userId){
 		let data = await API.loadMeProfile();
 			userId = data.data.id
 			API.loadUserProfile(userId).then(data =>{
+				// debugger
 				dispatch(userProfileAC(data))
 			})
 	}
@@ -101,9 +116,15 @@ export const updateUserStatusThunkCreator = (status) => async (dispatch)=>{
 		}
 }
 export const updatePhotoThunkCreator = (file) => async (dispatch)=>{
-	let data = await API.updateUserStatus(status);
+	let data = await API.profileAvatar(file);
 		if(data.resultCode === 0){
-			dispatch(userStatusAC(status))
+			dispatch(successUpdatePhotoAC(file))
 		}
+}
+export const updateProfileInfoThunkCreator = (profileInfo) => async (dispatch)=>{
+	let data = await API.updateProfileInfo(profileInfo);
+	if(data.resultCode === 0){
+		dispatch(successUpdateProfileInfoAC(profileInfo))
+	}
 }
 export default ProfilePageReducer;

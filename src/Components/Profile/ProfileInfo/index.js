@@ -1,38 +1,84 @@
-import React from 'react'
-import classes from './ProfileInfo.module.css'
+import React, {useState} from 'react'
 import Loader from "../../Common/Loader/Loader";
-import ProfileStatus from "./ProfileStatus";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
+import {createField} from "../../Common/FormControls/FormContols";
+import ProfileDataForm from "./ProfileDataForm";
 
-const ProfileInfo = (props) => {
-	if(!props.profile){
-		return <Loader />
-	}
-	const avatarChange = (e) =>{
-		if(e.target.files.length){
-			props.savePhoto(e.target.files[0])
-		}
-	}
-	return(
-		<React.Fragment>
-			<ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>
-			<div className="profile_info">
-				<p>{props.profile.fullName}</p>
-				<h4>{props.profile.aboutMe}</h4>
-				<ul>
-					{Object.keys(props.profile.contacts).map(li =>{
-						return <li>{li} : {props.profile.contacts[li]} </li>
-					})}
-				</ul>
-				<div className="user_avatar">
-					<img src={props.profile.photos.large ? props.profile.photos.large : "https://img.icons8.com/plasticine/2x/user.png"} alt="user"/>
-					{
-						props.isOwner ? <input onChange={avatarChange} type="file"/> : null
-					}
-				</div>
-			</div>
-		</React.Fragment>
-		)
+const ProfileInfo = ({profile, status, updateStatus, savePhoto, isOwner, updateUserProfile}) => {
+    if (!profile) {
+        return <Loader/>
+    }
+
+    const [editMode, setEditMode] = useState(false)
+
+    const avatarChange = (e) => {
+        if (e.target.files.length) {
+            savePhoto(e.target.files[0])
+        }
+    }
+    const onSubmit = (data) =>{
+        updateUserProfile(data)
+    }
+    return (
+        <React.Fragment>
+            <ProfileStatusWithHooks status={status} updateStatus={updateStatus}/>
+
+            {
+                editMode
+                    ? <ProfileDataForm
+                        avatarChange={avatarChange}
+                        profile={profile}
+                        isOwner={isOwner}
+                        onSubmit={onSubmit}
+                    />
+                    :
+                    <ProfileData
+                        profile={profile}
+                        isOwner={isOwner}
+                        goToEditMode={() => {
+                            setEditMode(true)
+                        }}
+                        avatarChange={avatarChange}/>
+            }
+
+        </React.Fragment>
+    )
 }
+
+const ProfileContacts = ({contactKey, contactValue}) => {
+    return <li><b>{contactKey}: </b>{contactValue}</li>
+}
+
+const ProfileData = ({profile, isOwner, avatarChange, goToEditMode}) => {
+    return (
+        <div className="profile_info">
+            <div>
+                {
+                    isOwner && <button onClick={goToEditMode}>Upgrade Profile</button>
+                }
+            </div>
+            <p><b>FullName: </b>{profile.fullName}</p>
+            <p><b>lookingForAJob:</b> {profile.lookingForAJob ? "Yes" : 'No'}</p>
+            {
+                profile.lookingForAJob &&
+                <p><b>lookingForAJobDescription:</b> {profile.lookingForAJobDescription ? "Yes" : 'No'}</p>
+            }
+            <h4>{profile.aboutMe}</h4>
+            <ul>
+                {Object.keys(profile.contacts).map(li => {
+                    return <ProfileContacts key={li} contactKey={li} contactValue={profile.contacts[li]}/>
+                })}
+            </ul>
+            <div className="user_avatar">
+                <img src={profile.photos.large ? profile.photos.large : "https://img.icons8.com/plasticine/2x/user.png"}
+                     alt="user"/>
+                {
+                    isOwner ? <input onChange={avatarChange} type="file"/> : null
+                }
+            </div>
+        </div>
+    )
+}
+
 
 export default ProfileInfo
