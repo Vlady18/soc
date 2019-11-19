@@ -1,4 +1,5 @@
 import {API} from "../API/API";
+import {stopSubmit} from "redux-form";
 
 const ADD_POST = 'ADD_POST'
 const UPDATE_TEXT = 'UPDATE_TEXT'
@@ -118,7 +119,8 @@ export const updateUserStatusThunkCreator = (status) => async (dispatch)=>{
 export const updatePhotoThunkCreator = (file) => async (dispatch)=>{
 	let data = await API.profileAvatar(file);
 		if(data.resultCode === 0){
-			dispatch(successUpdatePhotoAC(file))
+            debugger
+			dispatch(successUpdatePhotoAC(data.data.photos))
 		}
 }
 export const updateProfileInfoThunkCreator = (profileInfo) => async (dispatch)=>{
@@ -126,5 +128,9 @@ export const updateProfileInfoThunkCreator = (profileInfo) => async (dispatch)=>
 	if(data.resultCode === 0){
 		dispatch(successUpdateProfileInfoAC(profileInfo))
 	}
+	else{
+        dispatch(stopSubmit('edit_profile', {_error: data.messages || 'Email or Password is wrong!'}))
+        return Promise.reject(data.messages[0])
+    }
 }
 export default ProfilePageReducer

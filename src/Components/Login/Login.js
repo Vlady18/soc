@@ -13,11 +13,11 @@ export const LoginForm = (props) =>{
     return(
         <form onSubmit={props.handleSubmit}>
 
-                {createField('login', [required, maxLength15, email], Input, 'text')}
+                {createField('login', [required, maxLength15, email], Input, {type: 'text'})}
 
-                {createField('password', [required, maxLength15], Input, 'password')}
+                {createField('password', [required, maxLength15], Input, {type: 'password'})}
 
-                {createField('remember', [], Input, 'checkbox')}Remember Me
+                {createField('remember', [], Input, {type: 'checkbox'})}Remember Me
             {props.error && <div className={classes.summaryError}>
                 <span>
                     {props.error}
@@ -30,7 +30,7 @@ export const LoginForm = (props) =>{
                     ?
                     <div>
                         <img src={props.captchaUrl} alt=""/>
-                        {createField('captcha', [], Input, 'text')}
+                        {createField('captcha', [], Input, {type: 'text'})}
                         {/*<Field name="captcha" component={Input} type="text" />*/}
                     </div>
                     : null}

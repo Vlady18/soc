@@ -15,7 +15,9 @@ const ProfileInfo = ({profile, status, updateStatus, savePhoto, isOwner, updateU
         }
     }
     const onSubmit = (data) =>{
-        updateUserProfile(data)
+        updateUserProfile(data).then(()=>{
+            setEditMode(false)
+        })
     }
     return (
         <React.Fragment>
@@ -33,6 +35,7 @@ const ProfileInfo = ({profile, status, updateStatus, savePhoto, isOwner, updateU
                         profile={profile}
                         isOwner={isOwner}
                         onSubmit={onSubmit}
+                        initialValues={profile}
                     />
                     :
                     <ProfileData
@@ -64,7 +67,7 @@ const ProfileData = ({profile, isOwner, avatarChange, goToEditMode}) => {
             <p><b>lookingForAJob:</b> {profile.lookingForAJob ? "Yes" : 'No'}</p>
             {
                 profile.lookingForAJob &&
-                <p><b>lookingForAJobDescription:</b> {profile.lookingForAJobDescription ? "Yes" : 'No'}</p>
+                <p><b>lookingForAJobDescription:</b> {profile.lookingForAJobDescription}</p>
             }
             <h4>{profile.aboutMe}</h4>
             <ul>
